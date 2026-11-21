@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Raphael Del Mundo · EIF Portfolio</title>
+<meta name="description" content="EIF Cohort 11 culmination portfolio of Raphael Emmanuel C. Del Mundo: the Odin and EIF Compass projects, the security showcase, and reflection.">
+<meta property="og:title" content="Raphael Del Mundo · EIF Portfolio">
+<meta property="og:description" content="Two shipped AI products, one security showcase, and what I learned in the Eskwelabs Innovation Fellowship.">
+<meta property="og:image" content="img/portrait.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: raw-selvedge indigo. A single reading column with wide case-study bands; one selvedge line (ecru / red / ecru) marks the start of each chapter. */
+:root {
+  --bg: #eef0f3;          /* faded chambray */
+  --surface: #ffffff;
+  --ink: #141a2e;         /* raw indigo, near-black */
+  --muted: #545c75;
+  --line: #d3d8e2;
+  --indigo: #23356b;      /* deep dyed denim */
+  --selvedge: #c2332b;    /* the red ID thread */
+  --ecru: #f2efe6;        /* unbleached cotton */
+  --chip: #e2e6f0;
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1325; --surface: #161d36; --ink: #e9ecf5; --muted: #a0a8c2; --line: #2a3354;
+    --indigo: #9fb2f0; --selvedge: #ef6a5f; --ecru: #e9e4d6; --chip: #212a4a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1325; --surface: #161d36; --ink: #e9ecf5; --muted: #a0a8c2; --line: #2a3354;
+  --indigo: #9fb2f0; --selvedge: #ef6a5f; --ecru: #e9e4d6; --chip: #212a4a; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 1.0625rem; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--indigo); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible { outline: 2px solid var(--selvedge); outline-offset: 3px; border-radius: 2px; }
+img { display: block; max-width: 100%; height: auto; }
+
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.read { max-width: 68ch; }
+
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.02; }
+h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; font-stretch: 78%; text-transform: uppercase; letter-spacing: -0.01em; }
+h3 { font-size: 1.35rem; font-weight: 700; font-stretch: 90%; }
+p { margin: 0; }
+.mono { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.02em; }
+.eyebrow { font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+
+/* selvedge line: ecru / red / ecru, like the edge of a raw denim seam */
+.selvedge { height: 7px; background: linear-gradient(var(--ecru) 0 2px, var(--selvedge) 2px 5px, var(--ecru) 5px 7px); border-radius: 1px; width: 72px; }
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(40px, 7vw, 88px) clamp(40px, 6vw, 72px); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr); gap: clamp(28px, 5vw, 64px); align-items: end; }
+.hero h1 { font-size: clamp(3.2rem, 9.5vw, 7.4rem); font-weight: 900; font-stretch: 68%; text-transform: uppercase; letter-spacing: -0.015em; line-height: 0.9; }
+.hero h1 span { display: block; color: var(--indigo); }
+.hero .lede { margin-top: 26px; font-size: 1.2rem; max-width: 40ch; }
+.hero .meta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--muted); }
+.portrait { position: relative; }
+.portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 52% 30%; border-radius: 4px; }
+.portrait figcaption { margin-top: 10px; color: var(--muted); }
+.hero-links { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 3px; font-weight: 600; font-size: 0.95rem; text-decoration: none; border: 1.5px solid var(--ink); color: var(--ink); }
+.btn.primary { background: var(--ink); color: var(--bg); }
+.btn:hover { text-decoration: none; background: var(--indigo); border-color: var(--indigo); color: var(--bg); }
+
+/* ---------- chapters ---------- */
+section.chapter { padding-block: clamp(48px, 7vw, 88px); border-top: 1px solid var(--line); }
+.chapter-head { display: grid; gap: 14px; margin-bottom: 36px; }
+.chapter-head .eyebrow { display: flex; align-items: center; gap: 14px; }
+
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 48px; }
+.stack { display: grid; gap: 16px; }
+
+/* timeline: a real dated sequence */
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.timeline li { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 24px; padding-block: 18px; border-bottom: 1px dashed var(--line); }
+.timeline li:last-child { border-bottom: 0; }
+.timeline .when { font-family: var(--mono); font-size: 0.82rem; color: var(--indigo); padding-top: 3px; font-variant-numeric: tabular-nums; }
+.timeline strong { font-weight: 600; }
+.timeline p { color: var(--muted); margin-top: 2px; }
+.timeline li.turn { position: relative; }
+.timeline li.turn .when { color: var(--selvedge); }
+
+/* ---------- project case studies ---------- */
+.project { padding-block: clamp(40px, 6vw, 64px); }
+.project + .project { border-top: 1px dashed var(--line); }
+.project-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 24px; margin-bottom: 8px; }
+.project h3 { font-size: clamp(2rem, 4.4vw, 2.9rem); font-weight: 900; font-stretch: 72%; text-transform: uppercase; }
+.project .tag { color: var(--muted); }
+.project .subtitle { font-size: 1.15rem; color: var(--muted); max-width: 60ch; }
+.shots { margin-block: 28px; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; }
+.shots figure { margin: 0; display: grid; gap: 8px; }
+.shots .side { display: grid; gap: 14px; align-content: start; }
+.shot { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--surface); }
+.shot img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; }
+.shots figcaption { color: var(--muted); }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 48px; }
+.facts .label { margin-bottom: 8px; }
+.facts ul { margin: 0; padding-left: 1.1em; display: grid; gap: 7px; }
+.facts li::marker { color: var(--selvedge); }
+.role { display: inline-block; font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--mono); font-size: 0.74rem; padding: 4px 9px; border-radius: 3px; background: var(--chip); color: var(--ink); }
+.links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 4px; }
+
+/* ---------- showcase ---------- */
+.showcase { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 56px); align-items: center; }
+.showcase img { border-radius: 4px; border: 1px solid var(--line); }
+.stat-row { display: flex; flex-wrap: wrap; gap: 28px; margin-block: 22px; }
+.stat b { display: block; font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: 2.4rem; line-height: 1; color: var(--indigo); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 0.9rem; color: var(--muted); }
+
+/* ---------- reflection ---------- */
+.reflect { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+.reflect > div { padding: 28px; display: grid; gap: 12px; align-content: start; }
+.reflect > div:nth-child(odd) { border-right: 1px solid var(--line); }
+.reflect > div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+.reflect ul { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; }
+.reflect li::marker { color: var(--selvedge); }
+
+/* ---------- outside of code ---------- */
+.shelf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 40px; }
+.shelf .label { margin-bottom: 8px; }
+.shelf p { color: var(--ink); }
+.shelf em { font-style: normal; color: var(--muted); }
+
+footer { border-top: 1px solid var(--line); padding-block: 36px 56px; color: var(--muted); }
+footer .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 860px) {
+  .hero-grid, .showcase, .shots { grid-template-columns: minmax(0, 1fr); }
+  .portrait { max-width: 420px; }
+  .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .two, .facts, .reflect, .shelf { grid-template-columns: minmax(0, 1fr); }
+  .reflect > div:nth-child(odd) { border-right: 0; }
+  .reflect > div:not(:last-child) { border-bottom: 1px solid var(--line); }
+  .timeline li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  body { font-size: 1rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn { transition: background .15s ease, color .15s ease, border-color .15s ease; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Eskwelabs Innovation Fellowship · Cohort 11 · AI Solution Development</p>
+      <h1 style="margin-top:18px">Raphael<span>Del Mundo</span></h1>
+      <p class="lede">I build AI products with a backend and security focus. Over three months at EIF I shipped two deployed apps with my teammate Neil, then co-hosted a showcase on how to build them safely.</p>
+      <div class="meta mono">
+        <span>DLSU-Dasmariñas</span>
+        <span>Aug – Nov 2026</span>
+        <span>2 projects · 1 showcase</span>
+      </div>
+      <div class="hero-links">
+        <a class="btn primary" href="#projects">See the projects</a>
+        <a class="btn" href="https://drive.google.com/drive/folders/1i369lZ_BYou0PSkVaE0MLA8RzN3g-rAv">Project files (Drive)</a>
+        <a class="btn" href="https://github.com/RedGla">GitHub</a>
+      </div>
+    </div>
+    <figure class="portrait" style="margin:0">
+      <img src="img/portrait.jpg" alt="Portrait of Raphael in a blue pinstripe shirt, hand at his chin, looking to the side." width="2000" height="1999">
+    </figure>
+  </div>
+</header>
+
+<main>
+  <!-- 1. About -->
+  <section class="chapter" id="about">
+    <div class="wrap">
+      <div class="chapter-head">
+        <p class="eyebrow"><span class="selvedge" aria-hidden="true"></span>About me</p>
+        <h2>Who I am</h2>
+      </div>
+      <div class="two">
+        <div class="stack read">
+          <p>I'm Raphael Emmanuel C. Del Mundo, a student at De La Salle University–Dasmariñas. I'm most interested in the places where <strong>cybersecurity, AI and cloud</strong> meet: building useful AI tools, and making sure they can't be turned against the people using them.</p>
+          <p>What motivates me is getting a product all the way to working: past the demo, deployed, tested and safe for real users. I like the backend work most people don't see, like the data model, the permissions and the edge cases.</p>
+        </div>
+        <div class="stack read">
+          <p class="eyebrow">Interests</p>
+          <div class="chips">
+            <span class="chip">Application security</span><span class="chip">AI products</span><span class="chip">Cloud</span><span class="chip">Backend systems</span><span class="chip">Databases</span><span class="chip">Vintage fashion</span><span class="chip">Film</span><span class="chip">Music</span>
+          </div>
+          <p style="color:var(--muted)">More about what I listen to, watch and wear is <a href="#outside">at the end of the page</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. EIF Journey -->
+  <section class="chapter" id="journey">
+    <div class="wrap">
+      <div class="chapter-head">
+        <p class="eyebrow"><span class="selvedge" aria-hidden="true"></span>My EIF journey</p>
+        <h2>AI Solution Development track</h2>
+        <p class="read" style="color:var(--muted)">I spent late August to November 20 in the track: onboarding and coursework first, then two team projects with Neil Francis Espinosa, then a community showcase.</p>
+      </div>
+      <ol class="timeline read" style="max-width:820px">
+        <li><span class="when">Late Aug</span><div><strong>Onboarding and coursework</strong><p>Track orientation and the coursework that came before the build sprints.</p></div></li>
+        <li><span class="when">Sep 5 – Oct 2</span><div><strong>Project 1: Odin, Study Skill Advisor</strong><p>A 3-week build from an empty repo to a deployed AI advisor. I worked mostly on the backend, plus some frontend.</p></div></li>
+        <li class="turn"><span class="when">Sep 22 – 23</span><div><strong>Turning point: a working demo isn't a secure one</strong><p>Odin worked, but the hardening pass showed how much was still open: race conditions on usage limits, CSRF, and whether one user could read another's data. Security became part of how I build from then on.</p></div></li>
+        <li><span class="when">Oct 5 – Oct 28</span><div><strong>Project 2: EIF Compass</strong><p>A track assignment built for EIF fellows and leads. I worked on the database schema, security, and the frontend redesign.</p></div></li>
+        <li><span class="when">Nov 11</span><div><strong>EIF Showcase: Think Like an Attacker, Build Like a Defender</strong><p>Neil and I hosted a webinar on application security, using Compass as the case study.</p></div></li>
+        <li><span class="when">Nov 20</span><div><strong>Final requirements</strong><p>This portfolio, both project packages, and graduation on November 21.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 3. Projects -->
+  <section class="chapter" id="projects">
+    <div class="wrap">
+      <div class="chapter-head">
+        <p class="eyebrow"><span class="selvedge" aria-hidden="true"></span>Project portfolio</p>
+        <h2>Two shipped products</h2>
+      </div>
+
+      <!-- Odin -->
+      <article class="project" id="odin">
+        <div class="project-top">
+          <h3>Odin</h3>
+          <span class="mono tag">Project 1 · Sep 5 – Oct 2, 2026 · with Neil Espinosa</span>
+        </div>
+        <p class="subtitle">An AI study and project advisor. Users sign in, chat with an advisor that answers from approved reference documents, and admins control usage and accounts.</p>
+
+        <div class="shots">
+          <figure>
+            <div class="shot"><img src="img/chat-desktop.png" alt="Odin chat screen with a conversation list on the left and the prompt 'What's on your mind?' in the centre." loading="lazy"></div>
+            <figcaption class="mono">Advisor chat with saved conversations</figcaption>
+          </figure>
+          <div class="side">
+            <figure>
+              <div class="shot"><img src="img/admin-desktop.png" alt="Odin admin Operations page with database status, application rules for daily limits, and account management." loading="lazy"></div>
+              <figcaption class="mono">Admin console: usage rules and accounts</figcaption>
+            </figure>
+            <figure>
+              <div class="shot"><img src="img/settings-desktop.png" alt="Odin account settings page." loading="lazy"></div>
+              <figcaption class="mono">Account settings</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="facts">
+          <div>
+            <p class="eyebrow label">Context / problem</p>
+            <p>Students looking for study and project guidance get generic answers from general chatbots. Odin answers from documents the program controls, keeps a history people can return to, and lets admins cap usage so costs stay predictable.</p>
+          </div>
+          <div>
+            <p class="eyebrow label">My role</p>
+            <p><span class="role">Backend developer, with some frontend work.</span> I handled most of the server, database, AI integration and security work.</p>
+          </div>
+          <div>
+            <p class="eyebrow label">What I built</p>
+            <ul>
+              <li>Set up the project on day one: FastAPI, Vite + React, PostgreSQL on Supabase, and Alembic migrations</li>
+              <li>Session login with cookies and the API for creating, renaming and deleting conversations</li>
+              <li>The AI pipeline: OpenRouter for answers, Google Docs as the cached source the advisor answers from, and safe loading of the service-account key</li>
+              <li>Daily message and token limits, with Postgres row locking so two requests at once can't go over the cap</li>
+              <li>Security hardening: CSRF origin checks, locked-down database tables, and tests showing one user can't read another's data</li>
+              <li>The admin console: usage table, event viewer and limits admins can change</li>
+              <li>Frontend reliability: a crash screen instead of a white page, a redirect when a session expires, and a themed rename dialog</li>
+              <li>The evaluation and test setup, database backup and rollback steps, and the final PRD</li>
+            </ul>
+          </div>
+          <div class="stack">
+            <div>
+              <p class="eyebrow label">Outputs</p>
+              <ul>
+                <li>Live app on Vercel (frontend) and Render (backend)</li>
+                <li>PRD, timeline and verification documents</li>
+                <li>Backend test suite and evaluation results</li>
+              </ul>
+            </div>
+            <div>
+              <p class="eyebrow label">Skills shown</p>
+              <div class="chips"><span class="chip">FastAPI</span><span class="chip">PostgreSQL</span><span class="chip">SQLAlchemy</span><span class="chip">Alembic</span><span class="chip">LLM integration</span><span class="chip">Auth &amp; sessions</span><span class="chip">Concurrency</span><span class="chip">AppSec</span><span class="chip">React + TS</span><span class="chip">Deployment</span></div>
+            </div>
+            <div class="links">
+              <a href="https://advisor-console-nine.vercel.app/">Live app</a>
+              <a href="https://github.com/RedGla/Odin-Study-Skill-Advisor">GitHub repo</a>
+              <a href="https://drive.google.com/file/d/1AzNriUVACqOaSKJdT2KUKmqH0_NfwbT7/view">Project zip</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Compass -->
+      <article class="project" id="compass">
+        <div class="project-top">
+          <h3>EIF Compass</h3>
+          <span class="mono tag">Project 2 · Oct 5 – Oct 28, 2026 · with Neil Espinosa</span>
+        </div>
+        <p class="subtitle">One workspace for EIF fellows to track tasks, requirements and events, with a cohort view for fellowship leads and an AI assistant that suggests the next step.</p>
+
+        <div class="shots">
+          <figure>
+            <div class="shot"><img src="img/compass-lead.jpg" alt="EIF Compass lead overview in dark mode showing intern count, task completion, review queue, team progress and overdue items." loading="lazy"></div>
+            <figcaption class="mono">Lead view: the cohort at a glance (sample data)</figcaption>
+          </figure>
+          <div class="side">
+            <figure>
+              <div class="shot"><img src="img/compass-intern.jpg" alt="EIF Compass fellow overview with a suggested next step, completion stats, tasks and requirements." loading="lazy"></div>
+              <figcaption class="mono">Fellow view with Next Best Action (sample data)</figcaption>
+            </figure>
+            <figure>
+              <div class="shot"><img src="img/compass-signin.jpg" alt="EIF Compass sign-in page with the headline 'Your next chapter starts with a clear direction.'" loading="lazy"></div>
+              <figcaption class="mono">Sign-in, from the redesign</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="facts">
+          <div>
+            <p class="eyebrow label">Context / problem</p>
+            <p>EIF fellows track tasks, requirements and events across scattered places, and leads have no single view of how their cohort is doing. Compass was a track assignment built for those users: one place for both, where each role sees only what it should.</p>
+          </div>
+          <div>
+            <p class="eyebrow label">My role</p>
+            <p><span class="role">Frontend, database and security.</span> Neil and I split the build; I owned the schema and access rules, the security hardening, and the frontend redesign.</p>
+          </div>
+          <div>
+            <p class="eyebrow label">What I built</p>
+            <ul>
+              <li>The database schema for teams and projects, with Supabase row-level security (RLS) policies deciding who can read and change each record</li>
+              <li>Security hardening: RLS policies, server-side permission checks, and input validation</li>
+              <li>System design improvements across the intern and lead workflows, including the Next Best Action feature</li>
+              <li>The "Deep Lagoon" redesign: design spec, theme tokens, light and dark mode, and every page moved onto the new tokens</li>
+              <li>A command palette, keyboard shortcuts, and motion for drawers, lists, sign-in and streaming AI answers</li>
+              <li>Accessibility and mobile fixes: 44px tap targets, focus outlines in high-contrast mode, and tables that fit on phones</li>
+              <li>A sample-data test harness for checking every screen without touching real data</li>
+            </ul>
+          </div>
+          <div class="stack">
+            <div>
+              <p class="eyebrow label">Outputs</p>
+              <ul>
+                <li>Live app on Vercel with Supabase</li>
+                <li>Migrations, RLS policies and backend tests</li>
+                <li>PRD, design spec and verification checklist</li>
+              </ul>
+            </div>
+            <div>
+              <p class="eyebrow label">Skills shown</p>
+              <div class="chips"><span class="chip">Supabase</span><span class="chip">Row-level security</span><span class="chip">Schema design</span><span class="chip">Input validation</span><span class="chip">React + TS</span><span class="chip">Design systems</span><span class="chip">Accessibility</span><span class="chip">Motion</span></div>
+            </div>
+            <div class="links">
+              <a href="https://eif-compass.vercel.app">Live app</a>
+              <a href="https://github.com/neilfrfr/EIF-Compass">GitHub repo</a>
+              <a href="https://drive.google.com/file/d/1gXVgmSWr0ilhDw7L0-yvglCi9rXRb63I/view">Project zip</a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Showcase -->
+  <section class="chapter" id="showcase">
+    <div class="wrap showcase">
+      <img src="img/showcase.webp" alt="EIF Showcase poster: Think Like an Attacker, Build Like a Defender. Wednesday, November 11, 5 to 6 PM on Zoom, with Raphael Emmanuel C. Del Mundo and Neil Francis Espinosa." loading="lazy" width="1080" height="1080">
+      <div class="stack">
+        <p class="eyebrow"><span class="selvedge" aria-hidden="true" style="display:inline-block;vertical-align:middle;margin-right:14px"></span>EIF Showcase · hosted</p>
+        <h2>Think like an attacker, build like a defender</h2>
+        <p class="read">Neil and I hosted a one-hour webinar on common application security risks and how to defend against them. We walked through simple examples, ran an interactive quiz, and used EIF Compass as the case study: how to check permissions, handle data safely, and test both what users should be allowed to do and what should be blocked.</p>
+        <div class="stat-row">
+          <div class="stat"><b>~20</b><span>attendees</span></div>
+          <div class="stat"><b>Nov 11</b><span>5–6 PM, on Zoom</span></div>
+          <div class="stat"><b>3 of 3</b><span>event requirement met</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Reflection -->
+  <section class="chapter" id="reflection">
+    <div class="wrap">
+      <div class="chapter-head">
+        <p class="eyebrow"><span class="selvedge" aria-hidden="true"></span>Reflection</p>
+        <h2>What I take with me</h2>
+      </div>
+      <div class="reflect">
+        <div>
+          <h3>What I learned</h3>
+          <ul>
+            <li>Security is part of building from the first day, not a check at the end. Permissions, data isolation and limits are features.</li>
+            <li>Writing a PRD and verification checklists first made AI coding tools much more useful, because they had something concrete to build and test against.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What I'm proudest of</h3>
+          <ul>
+            <li>Odin's backend, from an empty scaffold to a deployed, tested system.</li>
+            <li>Hosting the Showcase webinar and teaching what I learned the hard way.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Challenges</h3>
+          <ul>
+            <li>Deploying on free tiers: Render cold starts, Google service-account keys, and cookies across two domains.</li>
+            <li>Keeping Odin's scope under control in a three-week timeline.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What I'd do differently</h3>
+          <ul>
+            <li>Write tests at the start instead of during the hardening pass.</li>
+            <li>Get real users trying the product sooner.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Looking forward -->
+  <section class="chapter" id="forward">
+    <div class="wrap">
+      <div class="chapter-head">
+        <p class="eyebrow"><span class="selvedge" aria-hidden="true"></span>Looking forward</p>
+        <h2>What's next</h2>
+      </div>
+      <div class="two">
+        <div class="stack read">
+          <h3>What I'm exploring</h3>
+          <p>Application security, cloud platforms such as AWS and GCP and their certifications, and building AI products that are safe by design.</p>
+          <h3 style="margin-top:12px">Career interests</h3>
+          <p>A backend, security or AI engineering role, ideally one where I get to own a system end to end.</p>
+        </div>
+        <div class="stack read">
+          <h3>How EIF prepared me</h3>
+          <p>EIF had me ship two real, deployed products with a teammate under deadlines, and back them up with PRDs, tests and verification. I leave with work I can show and explain, and the habit of asking how something could break before calling it done.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outside of code -->
+  <section class="chapter" id="outside">
+    <div class="wrap">
+      <div class="chapter-head">
+        <p class="eyebrow"><span class="selvedge" aria-hidden="true"></span>Outside of code</p>
+        <h2>Off the clock</h2>
+      </div>
+      <div class="shelf">
+        <div><p class="eyebrow label">Music</p><p>Radiohead above all. Kanye West, Kendrick Lamar, Tyler, the Creator, Frank Ocean, Nirvana, Gorillaz, IV of Spades and Lola Amour.</p></div>
+        <div><p class="eyebrow label">Films</p><p>The Lion King, Pulp Fiction, Life of Pi <em>(life-changing)</em> and American Psycho <em>(which I watch as a satirical comedy)</em>. Recent watches: Obsession, 2 Valid IDs and The Odyssey. <a href="https://letterboxd.com/reddypizza/films/by/entry-rating/">My Letterboxd</a></p></div>
+        <div><p class="eyebrow label">Series</p><p>Breaking Bad <em>(the best)</em>, Modern Family, Gravity Falls and Black Mirror.</p></div>
+        <div><p class="eyebrow label">Anime</p><p>One Piece <em>(my first)</em>, Vinland Saga, Attack on Titan, Monster, Baccano! and Steins;Gate.</p></div>
+        <div><p class="eyebrow label">Style</p><p>Vintage and Amekaji: thrifted tees, Japanese selvedge raw denim and bootcut jeans. <em>The red line on this page is a selvedge edge.</em></p></div>
+        <div><p class="eyebrow label">Fragrance</p><p>Initio Paragon, Louis Vuitton Imagination, Amouage Outlands, YSL Tuxedo and Dior Homme Parfum 2020, among others.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <span class="mono">Raphael Emmanuel C. Del Mundo · EIF Cohort 11 · AI Solution Development</span>
+    <span class="links mono">
+      <a href="https://github.com/RedGla">GitHub</a>
+      <a href="https://drive.google.com/drive/folders/1i369lZ_BYou0PSkVaE0MLA8RzN3g-rAv">Project files</a>
+    </span>
+  </div>
+</footer>
+</body>
+</html>
